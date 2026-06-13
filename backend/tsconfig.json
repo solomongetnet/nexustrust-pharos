@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2022",                                  /* Output modern JS for current Node.js runtimes */
+    "lib": ["ES2022"],                                   /* Include latest library declarations */
+    
+    /* Modules */
+    "module": "NodeNext",                                /* Support both CommonJS and ESM modern patterns */
+    "moduleResolution": "NodeNext",                      /* Mimic Node.js resolution logic */
+    "rootDir": "src",                                    /* Source files location */
+    "outDir": "dist",                                    /* Compiled output location */
+    
+    /* JavaScript Support */
+    "allowJs": true,                                     /* Allow migration from JS to TS */
+    "checkJs": false,                                    /* Disable type checking for .js files */
+    
+    /* Interop Constraints */
+    "esModuleInterop": true,                             /* Fixes compatibility with CommonJS imports */
+    "forceConsistentCasingInFileNames": true,            /* Vital for case-sensitive Vercel build servers */
+    
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options */
+    "noImplicitAny": true,                               /* Prevent fallback to "any" type */
+    "skipLibCheck": true                                 /* Skip type checking of declaration files (.d.ts) */
+  },
+  "include": ["src/**/*"],                               /* Compile all TS files in src */
+  "exclude": ["node_modules", "dist"]                    /* Ignore dependency and output folders */
+}

@@ -1,0 +1,10 @@
+model User {
+  id            String         @id @default(uuid())
+  // The human owner's personal wallet address (e.g. MetaMask)
+  walletAddress String         @unique 
+  
+  // A human user can own multiple autonomous AI agents
+  agents        AgentProfile[]
+  
+  createdAt     DateTime       @default(now())
+}
