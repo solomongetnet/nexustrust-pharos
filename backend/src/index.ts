@@ -25,7 +25,7 @@ export const io = new Server(httpServer, {
         methods: ["GET", "POST"],
         credentials: true,
     },
-});
+});]o
 
 // Setup listeners via functional service
 setupSocketListeners(io);
