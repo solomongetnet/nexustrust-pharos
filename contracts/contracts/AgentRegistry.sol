@@ -5,10 +5,6 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 /// @title AgentRegistry
 /// @notice On-chain identity registry for AI agents. Each registered agent receives
 ///         an "Agent Identity NFT" (ERC-721) representing their on-chain identity.
-///         The NFT can carry metadata (name, avatar, description) used by
-///         reputation dashboards and other agents.
-/// @dev The canonical reputation key remains the registering address (the agent's
-///      operating wallet), which is wallet-agnostic: hot wallet, smart account, MPC, etc.
 contract AgentRegistry is ERC721 {
     struct Agent {
         address agentAddress;
@@ -36,60 +32,73 @@ contract AgentRegistry is ERC721 {
     error NotRegistered();
     error EmptyMetadataURI();
     error TokenDoesNotExist();
+    error NotAuthorized();
 
     constructor() ERC721("Pharos Agent Identity", "PAGENT") {}
 
-    /// @notice Register the caller as an agent. Mints an Agent Identity NFT to the caller.
-    /// @param metadataURI Off-chain URI (e.g. IPFS) pointing to agent metadata JSON
-    ///        (suggested fields: name, avatar, description, skillsOffered).
-    function registerAgent(string calldata metadataURI) external {
+    /// @notice Modifier to ensure caller is either the agent itself OR the current NFT owner
+    modifier onlyAgentOrOwner(address agentAddr) {
+        Agent memory agent = agents[agentAddr];
+        if (agent.registeredAt == 0) revert NotRegistered();
+        
+        // Check if sender is the agent or the current owner of the agent's NFT
+        if (msg.sender != agentAddr && msg.sender != ownerOf(agent.tokenId)) {
+            revert NotAuthorized();
+        }
+        _;
+    }
+
+    /// @notice Register an agent. Can be called by the agent itself or an agent owner.
+    /// @param agentAddress The operating wallet address of the AI agent.
+    /// @param metadataURI Off-chain URI (e.g. IPFS) pointing to agent metadata JSON.
+    function registerAgent(address agentAddress, string calldata metadataURI) external {
+        if (agentAddress == address(0)) revert NotAuthorized();
         if (bytes(metadataURI).length == 0) revert EmptyMetadataURI();
-        if (agents[msg.sender].registeredAt != 0) revert AlreadyRegistered();
+        if (agents[agentAddress].registeredAt != 0) revert AlreadyRegistered();
 
         uint256 tokenId = totalAgents + 1; // start IDs at 1
 
-        agents[msg.sender] = Agent({
-            agentAddress: msg.sender,
+        agents[agentAddress] = Agent({
+            agentAddress: agentAddress,
             metadataURI: metadataURI,
             tokenId: tokenId,
             registeredAt: block.timestamp,
             active: true
         });
 
-        tokenToAgent[tokenId] = msg.sender;
+        tokenToAgent[tokenId] = agentAddress;
         totalAgents = tokenId;
 
-        _safeMint(msg.sender, tokenId);
+        // Minting the NFT to the agent address. 
+        // Note: If you want the human owner to hold the NFT, change 'agentAddress' to 'msg.sender'.
+        _safeMint(agentAddress, tokenId);
 
-        emit AgentRegistered(msg.sender, tokenId, metadataURI, block.timestamp);
+        emit AgentRegistered(agentAddress, tokenId, metadataURI, block.timestamp);
     }
 
-    /// @notice Update the metadata URI for the calling agent's identity.
+    /// @notice Update the metadata URI for the agent's identity.
+    /// @param agentAddress The operating wallet address of the agent.
     /// @param newMetadataURI New off-chain metadata URI.
-    function updateMetadata(string calldata newMetadataURI) external {
-        Agent storage agent = agents[msg.sender];
-        if (agent.registeredAt == 0) revert NotRegistered();
+    function updateMetadata(address agentAddress, string calldata newMetadataURI) external onlyAgentOrOwner(agentAddress) {
         if (bytes(newMetadataURI).length == 0) revert EmptyMetadataURI();
 
-        agent.metadataURI = newMetadataURI;
+        agents[agentAddress].metadataURI = newMetadataURI;
 
-        emit AgentMetadataUpdated(msg.sender, agent.tokenId, newMetadataURI);
+        emit AgentMetadataUpdated(agentAddress, agents[agentAddress].tokenId, newMetadataURI);
     }
 
-    /// @notice Deactivate the calling agent (e.g. agent retiring / going offline).
-    function deactivateAgent() external {
-        Agent storage agent = agents[msg.sender];
-        if (agent.registeredAt == 0) revert NotRegistered();
-        agent.active = false;
-        emit AgentDeactivated(msg.sender, agent.tokenId);
+    /// @notice Deactivate the agent (e.g. agent retiring / going offline).
+    /// @param agentAddress The operating wallet address of the agent.
+    function deactivateAgent(address agentAddress) external onlyAgentOrOwner(agentAddress) {
+        agents[agentAddress].active = false;
+        emit AgentDeactivated(agentAddress, agents[agentAddress].tokenId);
     }
 
-    /// @notice Reactivate the calling agent.
-    function reactivateAgent() external {
-        Agent storage agent = agents[msg.sender];
-        if (agent.registeredAt == 0) revert NotRegistered();
-        agent.active = true;
-        emit AgentReactivated(msg.sender, agent.tokenId);
+    /// @notice Reactivate the agent.
+    /// @param agentAddress The operating wallet address of the agent.
+    function reactivateAgent(address agentAddress) external onlyAgentOrOwner(agentAddress) {
+        agents[agentAddress].active = true;
+        emit AgentReactivated(agentAddress, agents[agentAddress].tokenId);
     }
 
     /// @notice Check whether an address is a registered agent.
@@ -114,7 +123,7 @@ contract AgentRegistry is ERC721 {
         return agents[agentAddr];
     }
 
-    /// @notice ERC-721 metadata URI for the Agent Identity NFT (delegates to agent's metadataURI).
+    /// @notice ERC-721 metadata URI for the Agent Identity NFT.
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         _requireOwned(tokenId);
         address agentAddr = tokenToAgent[tokenId];

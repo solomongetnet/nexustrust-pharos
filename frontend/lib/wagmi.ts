@@ -3,14 +3,14 @@ import { injected } from "@wagmi/core";
 import { mainnet, sepolia, type Chain } from "wagmi/chains";
 
 export const pharosTestnet = {
-  id: 688688,
-  name: "Pharos Testnet",
+  id: 688689,
+  name: "Pharos Atlantic Testnet",
   nativeCurrency: { name: "Pharos", symbol: "PHRS", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://testnet.dplabs-internal.com"] },
+    default: { http: ["https://atlantic.dplabs-internal.com"] },
   },
   blockExplorers: {
-    default: { name: "Pharosscan", url: "https://testnet.pharosscan.xyz" },
+    default: { name: "Pharosscan", url: "https://atlantic.pharosscan.xyz" },
   },
   testnet: true,
 } as const satisfies Chain;

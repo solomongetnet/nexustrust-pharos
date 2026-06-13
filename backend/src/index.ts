@@ -3,8 +3,6 @@ import dotenv from 'dotenv';
 import rootRouter from './routes/index.js';
 import cors from 'cors';
 import errorHandlerMiddleware from './middleware/error.middleware.js';
-import { toNodeHandler } from "better-auth/node";
-import { auth } from './lib/auth.js';
 import fileUpload from "express-fileupload";
 import { rateLimit } from 'express-rate-limit';
 import { createServer } from "http";
@@ -16,7 +14,7 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
-const origin = ["http://192.168.1.10:3000", "http://localhost:3000"];
+const origin = ["http://192.168.1.10:3000", "http://localhost:3001", "http://localhost:4000"];
 
 // Initialize Socket.IO directly in main file
 export const io = new Server(httpServer, {
@@ -25,7 +23,7 @@ export const io = new Server(httpServer, {
         methods: ["GET", "POST"],
         credentials: true,
     },
-});]o
+});
 
 // Setup listeners via functional service
 setupSocketListeners(io);
@@ -45,10 +43,6 @@ const limiter = rateLimit({
 });
 
 app.set("trust proxy", 1);
-
-// 1. Better Auth handler - MUST be at the top, before any body parsers
-// We use app.all with the catch-all for Express 5 compatibility
-app.all("/api/auth/*splat", toNodeHandler(auth));
 
 // 2. CORS and other middlewares for the rest of the app
 app.use(
@@ -88,7 +82,5 @@ const startServer = async () => {
     }
 };
 
-if (process.env.NODE_ENV !== "production") {
-    startServer();
-}
+startServer();
 

@@ -70,16 +70,16 @@ export default function Landing() {
               <Reveal delay={240}>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
-                    href="/dashboard"
+                    href="/agents"
                     className="mono inline-flex items-center gap-2 rounded bg-foreground px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-background transition-transform hover:-translate-y-0.5 hover:bg-foreground/90"
                   >
-                    Open live demo <ArrowRight className="size-3" />
+                    View agents <ArrowRight className="size-3" />
                   </Link>
                   <Link
-                    href="/feed"
+                    href="/agents/create"
                     className="mono inline-flex items-center gap-2 rounded border border-border px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest transition-colors hover:border-pharos-blue hover:text-pharos-blue"
                   >
-                    Watch event feed
+                    Register agent
                   </Link>
                 </div>
               </Reveal>
@@ -210,12 +210,9 @@ export default function Landing() {
                 Drop a single read-call between your task router and your payment rail. Cached on-chain, sub-100ms p50 on Pharos-L1.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/dashboard" className="mono rounded bg-foreground px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-background">
+                <Link href="/agents" className="mono rounded bg-foreground px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-background">
                   Try it now
                 </Link>
-                <a href="#" className="mono rounded border border-border px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:border-pharos-blue hover:text-pharos-blue">
-                  Read docs
-                </a>
               </div>
             </div>
             <div className="lg:col-span-7">
@@ -251,10 +248,10 @@ export default function Landing() {
                 </div>
                 <div className="flex flex-wrap gap-3 lg:justify-end">
                   <Link href="/agents/create" className="mono inline-flex items-center gap-2 rounded bg-pharos-blue px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-background">
-                    Create agent
+                    Register agent
                   </Link>
-                  <Link href="/marketplace" className="mono inline-flex items-center gap-2 rounded border border-border px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:border-pharos-blue hover:text-pharos-blue">
-                    Browse marketplace
+                  <Link href="/agents" className="mono inline-flex items-center gap-2 rounded border border-border px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:border-pharos-blue hover:text-pharos-blue">
+                    View all agents
                   </Link>
                 </div>
               </div>

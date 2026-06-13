@@ -2,7 +2,7 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ArrowRight, Hash, Wallet as WalletIcon, X } from "lucide-react";
-import { AGENTS, shortAddr, TIER_COPY } from "@/lib/nexus-data";
+import { AGENTS, shortAddr, REPUTATIONS, avgScore } from "@/lib/nexus-data";
 import { cn } from "@/lib/utils";
 
 const DOMAIN_TAGS = ["Coding", "DeFi", "Payments", "Social", "Governance"] as const;
@@ -43,12 +43,10 @@ export function HeaderSearch() {
   const matchedAgents = useMemo(() => {
     if (!query) return AGENTS.slice(0, 5);
     return AGENTS.filter((a) => {
-      const inName = a.name.toLowerCase().includes(query);
-      const inAddr = a.address.toLowerCase().includes(query);
-      const inTier = a.tier.toLowerCase().includes(query);
-      const topDomain = Object.entries(a.scores).sort((x, y) => y[1].value - x[1].value)[0]?.[0] ?? "";
-      const inDomain = topDomain.toLowerCase().includes(query);
-      return inName || inAddr || inTier || inDomain;
+      const inAddr = a.agentAddress.toLowerCase().includes(query);
+      const inTokenId = a.tokenId.toString().includes(query);
+      const inMetadataURI = a.metadataURI.toLowerCase().includes(query);
+      return inAddr || inTokenId || inMetadataURI;
     }).slice(0, 6);
   }, [query]);
 
@@ -60,10 +58,10 @@ export function HeaderSearch() {
   const total = matchedAgents.length;
   useEffect(() => setActive(0), [query]);
 
-  function go(agentId: string) {
+  function go(agentAddress: string) {
     setOpen(false);
     setQ("");
-    router.push(`/agents/mine/${agentId}`);
+    router.push(`/agents`);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -75,7 +73,7 @@ export function HeaderSearch() {
       setActive((i) => Math.max(0, i - 1));
     } else if (e.key === "Enter" && matchedAgents[active]) {
       e.preventDefault();
-      go(matchedAgents[active].id);
+      go(matchedAgents[active].agentAddress);
     }
   }
 
@@ -99,7 +97,7 @@ export function HeaderSearch() {
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="Search agents by name, address, or tag…"
+          placeholder="Search agents by address, token ID, or metadata URI…"
           className="mono h-full w-full min-w-0 flex-1 bg-transparent text-[12px] tracking-tight text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         {q ? (
@@ -154,26 +152,21 @@ export function HeaderSearch() {
                 <div className="px-3 py-6 text-center">
                   <p className="text-xs text-muted-foreground">No agents match “{q}”.</p>
                   <p className="mt-1 text-[11px] text-muted-foreground/70">
-                    Try a domain, tier, or full address.
+                    Try a token ID, address, or metadata URI.
                   </p>
                 </div>
               ) : (
                 <ul className="space-y-0.5">
                   {matchedAgents.map((a, i) => {
-                    const tierC = TIER_COPY[a.tier];
-                    const tierTextCls =
-                      a.tier === "trusted"
-                        ? "text-pharos-green"
-                        : a.tier === "probationary"
-                        ? "text-pharos-amber"
-                        : "text-pharos-red";
+                    const reputation = REPUTATIONS[a.agentAddress];
+                    const score = reputation ? avgScore(reputation.avgScoreX100) : "-";
                     const isActive = i === active;
                     return (
-                      <li key={a.id}>
+                      <li key={a.agentAddress}>
                         <button
                           type="button"
                           onMouseEnter={() => setActive(i)}
-                          onClick={() => go(a.id)}
+                          onClick={() => go(a.agentAddress)}
                           className={cn(
                             "group flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors",
                             isActive ? "bg-background" : "hover:bg-background/60",
@@ -181,27 +174,29 @@ export function HeaderSearch() {
                         >
                           <div className={cn(
                             "flex size-8 shrink-0 items-center justify-center rounded-md text-[11px] font-bold",
-                            a.tier === "trusted" && "bg-pharos-green/15 text-pharos-green",
-                            a.tier === "probationary" && "bg-pharos-amber/15 text-pharos-amber",
-                            a.tier === "flagged" && "bg-pharos-red/15 text-pharos-red",
+                            a.active ? "bg-pharos-green/15 text-pharos-green" : "bg-pharos-red/15 text-pharos-red",
                           )}>
-                            {a.name.slice(0, 2).toUpperCase()}
+                            {a.agentAddress.slice(2, 4).toUpperCase()}
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="truncate text-[13px] font-medium text-foreground">{a.name}</span>
+                              <span className="truncate text-[13px] font-medium text-foreground">{shortAddr(a.agentAddress)}</span>
                               <span className={cn(
                                 "mono text-[9px] uppercase tracking-widest",
-                                tierTextCls,
+                                a.active ? "text-pharos-green" : "text-pharos-red",
                               )}>
-                                · {tierC.label}
+                                · {a.active ? "Active" : "Inactive"}
                               </span>
                             </div>
                             <div className="mono mt-0.5 flex items-center gap-2 text-[10px] text-muted-foreground">
                               <WalletIcon className="size-2.5" />
-                              {shortAddr(a.address)}
-                              <span className="text-border">·</span>
-                              <span>score {a.globalScore.toFixed(1)}</span>
+                              Token #{a.tokenId}
+                              {reputation && (
+                                <>
+                                  <span className="text-border">·</span>
+                                  <span>score {score}</span>
+                                </>
+                              )}
                             </div>
                           </div>
                           <ArrowRight className={cn(

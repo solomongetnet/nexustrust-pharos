@@ -1,10 +1,16 @@
 model User {
   id            String         @id @default(uuid())
-  // The human owner's personal wallet address (e.g. MetaMask)
-  walletAddress String         @unique 
+  walletAddress String         @unique @map("wallet_address")
+  displayName   String?        @map("display_name")
+  bio           String?        @db.Text
+  avatarUrl     String?        @map("avatar_url")
+  email         String?        @unique
+  isEmailVerified Boolean      @default(false) @map("is_email_verified")
   
-  // A human user can own multiple autonomous AI agents
   agents        AgentProfile[]
   
-  createdAt     DateTime       @default(now())
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  @@map("users")
 }

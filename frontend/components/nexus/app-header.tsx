@@ -14,11 +14,8 @@ import {
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/marketplace", label: "Marketplace" },
   { href: "/agents", label: "Agents" },
-  { href: "/agents/mine", label: "My Agents" },
-  { href: "/feed", label: "Feed" },
+  { href: "/agents/create", label: "Register" },
 ] as const;
 
 function NetworkToggle() {
@@ -194,8 +191,8 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
             NAV.map((n) => {
               const active =
                 n.href === "/agents"
-                  ? path === "/agents" || (path.startsWith("/agents/") && !path.startsWith("/agents/mine"))
-                  : path === n.href || path.startsWith(n.href + "/");
+                  ? path === "/agents" || path.startsWith("/agents/")
+                  : path === n.href;
               return (
                 <Link
                   key={n.href}
@@ -246,8 +243,8 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
             : NAV.map((n) => {
                 const active =
                   n.href === "/agents"
-                    ? path === "/agents" || (path.startsWith("/agents/") && !path.startsWith("/agents/mine"))
-                    : path === n.href || path.startsWith(n.href + "/");
+                    ? path === "/agents" || path.startsWith("/agents/")
+                    : path === n.href;
                 return (
                   <Link
                     key={n.href}
