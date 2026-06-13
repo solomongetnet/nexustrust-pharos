@@ -1,5 +1,8 @@
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
-import { configVariable, defineConfig } from "hardhat/config";
+import { defineConfig } from "hardhat/config";
+import "dotenv/config";
+
+const privateKey = process.env.PRIVATE_KEY || "";
 
 export default defineConfig({
   plugins: [hardhatToolboxViemPlugin],
@@ -28,11 +31,30 @@ export default defineConfig({
       type: "edr-simulated",
       chainType: "op",
     },
-    sepolia: {
+    pharos: {
       type: "http",
-      chainType: "l1",
-      url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
+      url: "https://atlantic.dplabs-internal.com",
+      chainId: 688689,
+      accounts: privateKey ? [privateKey] : [],
     },
   },
+
+  verify: {
+    etherscan: {
+      apiKey: "Put a random string", // Note we don't need a apiKey here, just leave a random string
+    },
+  },
+  chainDescriptors: {
+    688689: {
+      name: "Pharos Atlantic",
+      blockExplorers: {
+        etherscan: {
+          name: "Pharos Scan",
+          url: "https://atlantic.pharosscan.xyz/",
+          apiUrl: "https://api.socialscan.io/pharos-atlantic-testnet/v1/explorer/command_api/contract",
+        },
+      },
+    },
+  }
+
 });
