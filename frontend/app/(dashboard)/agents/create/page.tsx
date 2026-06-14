@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { useWriteContract, useAccount, useWaitForTransactionReceipt } from 'wagmi';
 import { isAddress } from 'viem';
-import { agentRegistryAbi, CONTRACT_ADDRESSES } from '@/lib/contracts';
+import { CONTRACT_ADDRESSES } from '@/contracts/index';
+import { agentRegistryAbi } from '@/contracts/abi/agent-registry-abi';
 import { useUploadAgentMetadata } from '@/hooks/api/use-agent-metadata';
 import { pharosTestnet } from '@/lib/wagmi';
 

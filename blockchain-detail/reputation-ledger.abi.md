@@ -2,6 +2,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "jobId",
+				"type": "bytes32"
+			}
+		],
+		"name": "acceptJob",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "registryAddress",
 				"type": "address"
@@ -61,6 +74,11 @@
 				"internalType": "bytes32",
 				"name": "jobId",
 				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "taskMetadataURI",
+				"type": "string"
 			}
 		],
 		"name": "createJob",
@@ -70,7 +88,17 @@
 	},
 	{
 		"inputs": [],
+		"name": "InvalidJobStatusForAcceptance",
+		"type": "error"
+	},
+	{
+		"inputs": [],
 		"name": "InvalidJobStatusForCompletion",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidJobStatusForRejection",
 		"type": "error"
 	},
 	{
@@ -96,6 +124,11 @@
 	{
 		"inputs": [],
 		"name": "NotJobClient",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "NotJobWorker",
 		"type": "error"
 	},
 	{
@@ -130,6 +163,31 @@
 		"inputs": [],
 		"name": "ZeroJobId",
 		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "jobId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "worker",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "JobAccepted",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -185,6 +243,12 @@
 			},
 			{
 				"indexed": false,
+				"internalType": "string",
+				"name": "taskMetadataURI",
+				"type": "string"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint256",
 				"name": "timestamp",
 				"type": "uint256"
@@ -192,6 +256,44 @@
 		],
 		"name": "JobCreated",
 		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "jobId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "worker",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "JobRejected",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "jobId",
+				"type": "bytes32"
+			}
+		],
+		"name": "rejectJob",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -270,8 +372,18 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "acceptedAt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "completedAt",
 						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "taskMetadataURI",
+						"type": "string"
 					}
 				],
 				"internalType": "struct ReputationLedger.Job",
@@ -375,8 +487,18 @@
 			},
 			{
 				"internalType": "uint256",
+				"name": "acceptedAt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
 				"name": "completedAt",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "taskMetadataURI",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

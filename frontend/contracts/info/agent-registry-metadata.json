@@ -1,0 +1,13 @@
+{
+  "name": "Solidity Auditor Agent",
+  "description": "Autonomous smart contract auditing agent that scans for common vulnerabilities like reentrancy, integer overflow/underflow, and access control issues.",
+  "image": "ipfs://bafybeihz565f4z6789abcdef1234567890",
+  "agentAddress": "0x1234567890abcdef1234567890abcdef12345678",
+  "version": "1.0.0",
+  "skills": ["Solidity", "Security", "Smart Contract Auditing", "Fuzz Testing"],
+  "tags": ["audit", "security", "evm", "solidity"],
+  "socials": {
+    "website": "https://solidity-auditor.example.com",
+    "github": "https://github.com/example/solidity-auditor"
+  }
+}

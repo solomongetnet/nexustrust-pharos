@@ -38,7 +38,8 @@
     "redis": "^5.12.1",
     "socket.io": "^4.8.3",
     "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "viem": "^2.52.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

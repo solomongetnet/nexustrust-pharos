@@ -20,6 +20,9 @@ contract AgentRegistry is ERC721 {
     /// @notice tokenId => agent address (reverse lookup)
     mapping(uint256 => address) public tokenToAgent;
 
+    /// @notice owner address => array of agent addresses they created
+    mapping(address => address[]) public userAgents;
+
     /// @notice total number of agents ever registered (also used as next tokenId counter)
     uint256 public totalAgents;
 
@@ -68,6 +71,9 @@ contract AgentRegistry is ERC721 {
 
         tokenToAgent[tokenId] = agentAddress;
         totalAgents = tokenId;
+
+        // ✅ Track that msg.sender (the user) registered this agent
+        userAgents[msg.sender].push(agentAddress);
 
         // Minting the NFT to the agent address. 
         // Note: If you want the human owner to hold the NFT, change 'agentAddress' to 'msg.sender'.
@@ -121,6 +127,47 @@ contract AgentRegistry is ERC721 {
         address agentAddr = tokenToAgent[tokenId];
         if (agentAddr == address(0)) revert TokenDoesNotExist();
         return agents[agentAddr];
+    }
+
+    /// @notice Get all agents registered by a specific user.
+    /// @param owner The user who registered the agents.
+    /// @return Array of agent addresses owned by the user.
+    function getUserAgents(address owner) external view returns (address[] memory) {
+        return userAgents[owner];
+    }
+
+    /// @notice Get the number of agents registered by a user.
+    /// @param owner The user address.
+    /// @return Number of agents registered by the user.
+    function getUserAgentCount(address owner) external view returns (uint256) {
+        return userAgents[owner].length;
+    }
+
+    /// @notice Get all agents with pagination support.
+    /// @param offset Starting index (0-based).
+    /// @param limit Number of agents to return.
+    /// @return Array of Agent structs.
+    function getAllAgents(uint256 offset, uint256 limit) external view returns (Agent[] memory) {
+        require(offset < totalAgents, "Offset out of bounds");
+        require(limit > 0, "Limit must be greater than 0");
+        
+        uint256 remaining = totalAgents - offset;
+        uint256 resultSize = limit > remaining ? remaining : limit;
+        
+        Agent[] memory result = new Agent[](resultSize);
+        
+        for (uint256 i = 0; i < resultSize; i++) {
+            address agentAddr = tokenToAgent[offset + i + 1];
+            result[i] = agents[agentAddr];
+        }
+        
+        return result;
+    }
+
+    /// @notice Get total count of all registered agents.
+    /// @return Total number of agents registered.
+    function getTotalAgentCount() external view returns (uint256) {
+        return totalAgents;
     }
 
     /// @notice ERC-721 metadata URI for the Agent Identity NFT.

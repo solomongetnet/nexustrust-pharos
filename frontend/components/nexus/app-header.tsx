@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/agents", label: "Agents" },
+  { href: "/agents/mine", label: "My Agents" },
   { href: "/agents/create", label: "Register" },
 ] as const;
 
@@ -128,11 +129,11 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
           </span>
         </Link>
 
-        <div className="hidden min-w-0 flex-1 justify-center md:flex">
+        {/* <div className="hidden min-w-0 flex-1 justify-center md:flex">
           <div className="w-full max-w-md">
             <HeaderSearch />
           </div>
-        </div>
+        </div> */}
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
           <div className="hidden sm:block">
@@ -191,7 +192,7 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
             NAV.map((n) => {
               const active =
                 n.href === "/agents"
-                  ? path === "/agents" || path.startsWith("/agents/")
+                  ? path === "/agents" || (path.startsWith("/agents/") && path !== "/agents/mine" && !path.startsWith("/agents/create"))
                   : path === n.href;
               return (
                 <Link
@@ -243,7 +244,7 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
             : NAV.map((n) => {
                 const active =
                   n.href === "/agents"
-                    ? path === "/agents" || path.startsWith("/agents/")
+                    ? path === "/agents" || (path.startsWith("/agents/") && path !== "/agents/mine" && !path.startsWith("/agents/create"))
                     : path === n.href;
                 return (
                   <Link

@@ -6,23 +6,28 @@ import "./AgentRegistry.sol";
 /// @title ReputationLedger
 /// @notice On-chain job + review ledger giving AI agents a verifiable trust score
 ///         for agent-to-agent hiring. Designed as the on-chain backing for a Skill
-///         API: create_job, complete_job, submit_review, get_reputation.
+///         API: create_job, accept_job, reject_job, complete_job, submit_review,
+///         get_reputation.
 contract ReputationLedger {
     AgentRegistry public immutable registry;
 
     enum JobStatus {
         None,       // 0 - job does not exist
-        Created,    // 1 - job created, work in progress
-        Completed,  // 2 - work marked complete, eligible for review
-        Reviewed    // 3 - review submitted, job lifecycle finished
+        Created,    // 1 - client proposed the job, awaiting worker's acceptance
+        Accepted,   // 2 - worker accepted, work in progress
+        Rejected,   // 3 - worker declined the job (terminal)
+        Completed,  // 4 - work marked complete, eligible for review
+        Reviewed    // 5 - review submitted, job lifecycle finished (terminal)
     }
 
     struct Job {
-        address client;    // agent who created the job (hiring agent)
-        address worker;    // agent hired to do the work
+        address client;         // agent who created the job (hiring agent)
+        address worker;         // agent hired to do the work
         JobStatus status;
         uint256 createdAt;
+        uint256 acceptedAt;
         uint256 completedAt;
+        string taskMetadataURI; // off-chain pointer (e.g. ipfs://...) to the task spec/description
     }
 
     struct Review {
@@ -48,7 +53,15 @@ contract ReputationLedger {
     uint256 public constant MAX_TAG_LENGTH = 32;
     uint256 public constant RECENT_REVIEWS_LIMIT = 5;
 
-    event JobCreated(bytes32 indexed jobId, address indexed client, address indexed worker, uint256 timestamp);
+    event JobCreated(
+        bytes32 indexed jobId,
+        address indexed client,
+        address indexed worker,
+        string taskMetadataURI,
+        uint256 timestamp
+    );
+    event JobAccepted(bytes32 indexed jobId, address indexed worker, uint256 timestamp);
+    event JobRejected(bytes32 indexed jobId, address indexed worker, uint256 timestamp);
     event JobCompleted(bytes32 indexed jobId, address indexed client, address indexed worker, uint256 timestamp);
     event ReviewSubmitted(
         bytes32 indexed jobId,
@@ -65,6 +78,9 @@ contract ReputationLedger {
     error JobAlreadyExists();
     error JobDoesNotExist();
     error NotJobClient();
+    error NotJobWorker();
+    error InvalidJobStatusForAcceptance();
+    error InvalidJobStatusForRejection();
     error InvalidJobStatusForCompletion();
     error InvalidJobStatusForReview();
     error InvalidScore();
@@ -89,10 +105,12 @@ contract ReputationLedger {
         return (a.agentAddress, a.metadataURI, a.registeredAt, a.active);
     }
 
-    /// @notice Create a job: a registered client agent hires a registered worker agent.
-    /// @param worker Address of the worker agent being hired.
+    /// @notice Propose a job: a registered client agent proposes hiring a registered worker agent.
+    ///         The job remains in `Created` status until the worker calls `acceptJob` or `rejectJob`.
+    /// @param worker Address of the worker agent being proposed.
     /// @param jobId Caller-supplied unique identifier for this job (e.g. keccak256 hash of off-chain task spec).
-    function createJob(address worker, bytes32 jobId) external {
+    /// @param taskMetadataURI Off-chain URI (e.g. ipfs://...) pointing to the task description/spec. Can be empty string.
+    function createJob(address worker, bytes32 jobId, string calldata taskMetadataURI) external {
         if (jobId == bytes32(0)) revert ZeroJobId();
         if (worker == msg.sender) revert CannotHireSelf();
 
@@ -106,19 +124,48 @@ contract ReputationLedger {
             worker: worker,
             status: JobStatus.Created,
             createdAt: block.timestamp,
-            completedAt: 0
+            acceptedAt: 0,
+            completedAt: 0,
+            taskMetadataURI: taskMetadataURI
         });
 
-        emit JobCreated(jobId, msg.sender, worker, block.timestamp);
+        emit JobCreated(jobId, msg.sender, worker, taskMetadataURI, block.timestamp);
     }
 
-    /// @notice Mark a job as completed. Only callable by the job's client.
+    /// @notice Accept a proposed job. Only callable by the job's worker.
+    /// @param jobId The job to accept.
+    function acceptJob(bytes32 jobId) external {
+        Job storage job = jobs[jobId];
+        if (job.status == JobStatus.None) revert JobDoesNotExist();
+        if (msg.sender != job.worker) revert NotJobWorker();
+        if (job.status != JobStatus.Created) revert InvalidJobStatusForAcceptance();
+
+        job.status = JobStatus.Accepted;
+        job.acceptedAt = block.timestamp;
+
+        emit JobAccepted(jobId, msg.sender, block.timestamp);
+    }
+
+    /// @notice Reject a proposed job. Only callable by the job's worker. Terminal state.
+    /// @param jobId The job to reject.
+    function rejectJob(bytes32 jobId) external {
+        Job storage job = jobs[jobId];
+        if (job.status == JobStatus.None) revert JobDoesNotExist();
+        if (msg.sender != job.worker) revert NotJobWorker();
+        if (job.status != JobStatus.Created) revert InvalidJobStatusForRejection();
+
+        job.status = JobStatus.Rejected;
+
+        emit JobRejected(jobId, msg.sender, block.timestamp);
+    }
+
+    /// @notice Mark an accepted job as completed. Only callable by the job's client.
     /// @param jobId The job to mark complete.
     function completeJob(bytes32 jobId) external {
         Job storage job = jobs[jobId];
         if (job.status == JobStatus.None) revert JobDoesNotExist();
         if (msg.sender != job.client) revert NotJobClient();
-        if (job.status != JobStatus.Created) revert InvalidJobStatusForCompletion();
+        if (job.status != JobStatus.Accepted) revert InvalidJobStatusForCompletion();
 
         job.status = JobStatus.Completed;
         job.completedAt = block.timestamp;

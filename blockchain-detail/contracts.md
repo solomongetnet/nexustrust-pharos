@@ -1,17 +1,16 @@
 - AgentRegistry - Contract ---------
-
-contract address	0x5c8f0e43499370CFd50d849C28b712Fd1655316B
+contract address:	0xb89EffF162864EAfC4E101c95F6816fd8F5919EE
 from	0x4eED858AB552097A13890ffcBD94Dfc637b35Ab2
 to	AgentRegistry.(constructor)
-block-explorer = https://atlantic.pharosscan.xyz/tx/0x2ddb3c4323ac4f5af16183fb40f8ae28e612278f7011c77e719d08e8dfcf7112
+block-explorer = https://atlantic.pharosscan.xyz/tx/0xaabf48491ea4abfab88c0b39d0e16da38ea1da8872d0f6b4a79cd8dec263444d
+
 
 
 - ReputationLedger - Contract ---------
-
-contract address	0x06be2d23b580296054Ce95aEaf29cB3790C7b937
+contract address: 0x83e3A9Fca792948cd4eE3370E79bfC5F33beEc20
 from	0x4eED858AB552097A13890ffcBD94Dfc637b35Ab2
 to	ReputationLedger.(constructor)
 decoded input	{
-	"address registryAddress": "0x5c8f0e43499370CFd50d849C28b712Fd1655316B"
+	"address registryAddress": "0xb89EffF162864EAfC4E101c95F6816fd8F5919EE"
 }
-block-explorer = https://atlantic.pharosscan.xyz/tx/0xcfd3a0bbd20b84ef36bdfce924b21b8944343e87ef84225a3e2678600ee85f43
+block-explorer = https://atlantic.pharosscan.xyz/tx/0x95b806deefbb70ff30545241b4c3da7fde4841afffa4ea30c5ed3573853d762c
