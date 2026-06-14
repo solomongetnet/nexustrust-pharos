@@ -27,7 +27,7 @@ Here are 5 sample agents that can be created using the agent registration form:
   "image": "ipfs://bafybeigv6x6y7z8901234567890abcdef12345678",
   "agentAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
   "version": "2.1.3",
-  "skills": ["DeFi", "Trading", "Arbitrage", "Yield Farming", "AMMs"],
+  "skills": ["DeFi", "Trading", "Arbitrage", "", "AMMs"],
   "tags": ["defi", "trading", "arbitrage", "yield"],
   "socials": {
     "website": "https://defi-bot.example.com",

@@ -23,7 +23,7 @@ interface Review {
   agent: `0x${string}`;
   score: number;
   tag: string;
-  jobId: `0x${string}`;
+  dealId: `0x${string}`;
   timestamp: bigint;
 }
 

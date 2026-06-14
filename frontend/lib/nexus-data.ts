@@ -1,5 +1,5 @@
 // Types from AgentRegistry.sol and ReputationLedger.sol
-export type JobStatus = "None" | "Created" | "Completed" | "Reviewed";
+export type DealStatus = "None" | "Created" | "Accepted" | "Rejected" | "Completed" | "Reviewed";
 
 // Backward compatibility types (temporary)
 export type Tier = "trusted" | "probationary" | "flagged";
@@ -25,12 +25,14 @@ export interface Agent {
   active: boolean;
 }
 
-export interface Job {
+export interface Deal {
   client: string;
   worker: string;
-  status: JobStatus;
+  status: DealStatus;
   createdAt: number;
+  acceptedAt: number;
   completedAt: number;
+  taskMetadataURI: string;
 }
 
 export interface Review {
@@ -38,7 +40,7 @@ export interface Review {
   agent: string;
   score: number; // 1-5
   tag: string;
-  jobId: string; // bytes32 as string
+  dealId: string; // bytes32 as string
   timestamp: number;
 }
 
@@ -46,6 +48,19 @@ export interface Reputation {
   avgScoreX100: number; // e.g., 450 = 4.50
   reviewCount: number;
   recent: Review[];
+}
+
+export interface ActivityEvent {
+  id: string;
+  agentId: string;
+  timestamp: number | string;
+  type: string;
+  delta: number;
+  tx: string;
+  severity: "info" | "positive" | "warning" | "severe";
+  dealId?: string;
+  contract?: string;
+  domain?: string;
 }
 
 // Example data
@@ -97,7 +112,7 @@ export const REPUTATIONS: Record<string, Reputation> = {
         agent: "0x821fa7b2c4e9d3a1f08b6c5e2d9a4f7b1c3e8d92",
         score: 5,
         tag: "fast",
-        jobId: "0x1234...",
+        dealId: "0x1234...",
         timestamp: Date.now() - 1000 * 60 * 60 * 2,
       },
       {
@@ -105,7 +120,7 @@ export const REPUTATIONS: Record<string, Reputation> = {
         agent: "0x821fa7b2c4e9d3a1f08b6c5e2d9a4f7b1c3e8d92",
         score: 4,
         tag: "reliable",
-        jobId: "0x5678...",
+        dealId: "0x5678...",
         timestamp: Date.now() - 1000 * 60 * 60 * 4,
       },
     ],
@@ -144,6 +159,6 @@ export const ACTIVITY = AGENTS.flatMap((agent) => {
     delta: review.score - 3,
     tx: `0x${Math.random().toString(16).slice(2, 10)}...${Math.random().toString(16).slice(2, 10)}`,
     severity: review.score >= 4 ? "positive" : review.score >= 3 ? "warning" : "severe",
-    jobId: review.jobId,
+    dealId: review.dealId,
   }));
 }).slice(-20).reverse();

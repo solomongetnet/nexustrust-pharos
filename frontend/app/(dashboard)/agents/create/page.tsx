@@ -13,6 +13,7 @@ import { CONTRACT_ADDRESSES } from '@/contracts/index';
 import { agentRegistryAbi } from '@/contracts/abi/agent-registry-abi';
 import { useUploadAgentMetadata } from '@/hooks/api/use-agent-metadata';
 import { pharosTestnet } from '@/lib/wagmi';
+import { ConnectWalletButton } from '@/components/nexus/connect-wallet-button';
 
 export default function CreateAgent() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
@@ -29,8 +30,9 @@ export default function CreateAgent() {
   const [metadataURI, setMetadataURI] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [txHash, setTxHash] = useState<`0x${string}` | null>(null);
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { writeContractAsync, isPending: isRegistering } = useWriteContract();
   const { mutateAsync: uploadMetadata, isPending: isUploading } = useUploadAgentMetadata();
   const { isLoading: isWaitingForReceipt, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({
@@ -62,6 +64,12 @@ export default function CreateAgent() {
 
   const handleUploadMetadata = async () => {
     if (!name || !description || !agentAddress || !isAddress(agentAddress)) return;
+
+    if (!isConnected) {
+      setWalletModalOpen(true);
+      return;
+    }
+
     try {
       const result = await uploadMetadata({
         name,
@@ -84,15 +92,21 @@ export default function CreateAgent() {
   };
 
   const handleRegister = async () => {
-    if (!metadataURI || !agentAddress || !isAddress(agentAddress) || !address) return;
+    if (!metadataURI || !agentAddress || !isAddress(agentAddress)) return;
+
+    if (!isConnected) {
+      setWalletModalOpen(true);
+      return;
+    }
+
     try {
       const hash = await writeContractAsync({
         address: CONTRACT_ADDRESSES.agentRegistry,
         abi: agentRegistryAbi,
         functionName: 'registerAgent',
         args: [agentAddress as `0x${string}`, metadataURI],
-        chain: pharosTestnet,  // ✅ Required
-        account: address,      // ✅ Required
+        chain: pharosTestnet, // ✅ Required
+        account: address, // ✅ Required
       });
 
       setTxHash(hash);
@@ -550,6 +564,9 @@ export default function CreateAgent() {
           )}
         </div>
       </main>
+      
+      {/* ConnectWalletButton (modal only) */}
+      <ConnectWalletButton open={walletModalOpen} onOpenChange={setWalletModalOpen} showTrigger={false} />
     </div>
   );
 }

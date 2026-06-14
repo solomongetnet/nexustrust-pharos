@@ -11,13 +11,21 @@ const SEVERITY_COLOR: Record<ActivityEvent["severity"], string> = {
 
 export function SlashEventRow({ event, fresh = false }: { event: ActivityEvent; fresh?: boolean }) {
   const [open, setOpen] = useState(false);
+  
+  const formatTimestamp = (ts: number | string): string => {
+    const date = new Date(typeof ts === "number" ? ts : parseInt(ts));
+    return date.toISOString();
+  };
+
+  const timestampStr = formatTimestamp(event.timestamp);
+
   return (
     <div className={`border-b border-border ${fresh ? "flash-in" : ""}`}>
       <button
         onClick={() => setOpen((o) => !o)}
         className="grid w-full grid-cols-[110px_90px_1fr_140px_80px_20px] items-center gap-3 px-3 py-2 text-left mono text-[11px] hover:bg-surface"
       >
-        <span className="text-muted-foreground">{event.timestamp.slice(11)}</span>
+        <span className="text-muted-foreground">{timestampStr.slice(11)}</span>
         <span className={`font-semibold uppercase ${SEVERITY_COLOR[event.severity]}`}>
           {event.severity === "severe" ? "SLASH" : event.severity === "warning" ? "DECAY" : event.severity === "positive" ? "APPROVE" : "INFO"}
         </span>
@@ -33,16 +41,16 @@ export function SlashEventRow({ event, fresh = false }: { event: ActivityEvent; 
           <Detail label="Agent" value={event.agentId} />
           <Detail label="Contract" value={event.contract ?? "—"} />
           <Detail label="Domain" value={event.domain ?? "—"} />
-          <Detail label="Job" value={event.jobId ?? "—"} />
+          <Detail label="Deal" value={event.dealId ?? "—"} />
           <Detail label="Full tx" value={event.tx} mono />
-          <Detail label="Timestamp" value={event.timestamp} />
+          <Detail label="Timestamp" value={timestampStr} />
         </div>
       )}
     </div>
   );
 }
 
-function Detail({ label, value, mono = true }: { label: string; value: string; mono?: boolean }) {
+function Detail({ label, value, mono = true }: { label: string; value: string | number; mono?: boolean }) {
   return (
     <div>
       <div className="text-[9px] uppercase tracking-wider text-muted-foreground">{label}</div>

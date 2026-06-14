@@ -3,11 +3,11 @@
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			}
 		],
-		"name": "acceptJob",
+		"name": "acceptDeal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -54,11 +54,11 @@
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			}
 		],
-		"name": "completeJob",
+		"name": "completeDeal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -72,7 +72,7 @@
 			},
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -81,29 +81,39 @@
 				"type": "string"
 			}
 		],
-		"name": "createJob",
+		"name": "createDeal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "InvalidJobStatusForAcceptance",
+		"name": "DealAlreadyExists",
 		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "InvalidJobStatusForCompletion",
+		"name": "DealDoesNotExist",
 		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "InvalidJobStatusForRejection",
+		"name": "InvalidDealStatusForAcceptance",
 		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "InvalidJobStatusForReview",
+		"name": "InvalidDealStatusForCompletion",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidDealStatusForRejection",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidDealStatusForReview",
 		"type": "error"
 	},
 	{
@@ -113,29 +123,19 @@
 	},
 	{
 		"inputs": [],
-		"name": "JobAlreadyExists",
+		"name": "NotDealClient",
 		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "JobDoesNotExist",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "NotJobClient",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "NotJobWorker",
+		"name": "NotDealWorker",
 		"type": "error"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -161,7 +161,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "ZeroJobId",
+		"name": "ZeroDealId",
 		"type": "error"
 	},
 	{
@@ -170,7 +170,7 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -186,7 +186,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "JobAccepted",
+		"name": "DealAccepted",
 		"type": "event"
 	},
 	{
@@ -195,7 +195,7 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -217,7 +217,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "JobCompleted",
+		"name": "DealCompleted",
 		"type": "event"
 	},
 	{
@@ -226,7 +226,7 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -254,7 +254,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "JobCreated",
+		"name": "DealCreated",
 		"type": "event"
 	},
 	{
@@ -263,7 +263,7 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -279,18 +279,18 @@
 				"type": "uint256"
 			}
 		],
-		"name": "JobRejected",
+		"name": "DealRejected",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			}
 		],
-		"name": "rejectJob",
+		"name": "rejectDeal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -301,7 +301,7 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{
@@ -342,11 +342,60 @@
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "",
 				"type": "bytes32"
 			}
 		],
-		"name": "getJob",
+		"name": "deals",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "worker",
+				"type": "address"
+			},
+			{
+				"internalType": "enum ReputationLedger.DealStatus",
+				"name": "status",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "createdAt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "acceptedAt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "completedAt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "taskMetadataURI",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "dealId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getDeal",
 		"outputs": [
 			{
 				"components": [
@@ -361,7 +410,7 @@
 						"type": "address"
 					},
 					{
-						"internalType": "enum ReputationLedger.JobStatus",
+						"internalType": "enum ReputationLedger.DealStatus",
 						"name": "status",
 						"type": "uint8"
 					},
@@ -386,7 +435,7 @@
 						"type": "string"
 					}
 				],
-				"internalType": "struct ReputationLedger.Job",
+				"internalType": "struct ReputationLedger.Deal",
 				"name": "",
 				"type": "tuple"
 			}
@@ -438,7 +487,7 @@
 					},
 					{
 						"internalType": "bytes32",
-						"name": "jobId",
+						"name": "dealId",
 						"type": "bytes32"
 					},
 					{
@@ -450,55 +499,6 @@
 				"internalType": "struct ReputationLedger.Review[]",
 				"name": "recent",
 				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "jobs",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "client",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "worker",
-				"type": "address"
-			},
-			{
-				"internalType": "enum ReputationLedger.JobStatus",
-				"name": "status",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "createdAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "acceptedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "completedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "taskMetadataURI",
-				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -606,7 +606,7 @@
 			},
 			{
 				"internalType": "bytes32",
-				"name": "jobId",
+				"name": "dealId",
 				"type": "bytes32"
 			},
 			{

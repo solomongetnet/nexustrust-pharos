@@ -111,7 +111,15 @@ function metaFor(c: { id: string; name: string; type?: string }): WalletMeta {
   );
 }
 
-export function ConnectWalletButton() {
+export function ConnectWalletButton({ 
+  open: externalOpen, 
+  onOpenChange: externalOnOpenChange,
+  showTrigger = true
+}: { 
+  open?: boolean; 
+  onOpenChange?: (open: boolean) => void;
+  showTrigger?: boolean
+}) {
   const { address, isConnected, connector } = useAccount();
   const { connectors, connect, isPending, error, variables, reset } = useConnect();
   const { disconnect } = useDisconnect();
@@ -119,7 +127,9 @@ export function ConnectWalletButton() {
   const { chains, switchChain, isPending: switchPending } = useSwitchChain();
   const { data: balance } = useBalance({ address });
 
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen ?? internalOpen;
+  const setOpen = externalOnOpenChange ?? setInternalOpen;
   const [copied, setCopied] = useState(false);
 
   const currentChain = chains.find((c) => c.id === chainId);
@@ -144,17 +154,19 @@ export function ConnectWalletButton() {
   if (!isConnected) {
     return (
       <>
-        <Button
-          size="sm"
-          onClick={() => {
-            reset();
-            setOpen(true);
-          }}
-          className="mono h-8 gap-1.5 rounded bg-foreground px-3 text-[11px] font-bold uppercase tracking-tight text-background hover:bg-foreground/90"
-        >
-          <Wallet className="size-3.5" />
-          Connect Wallet
-        </Button>
+        {showTrigger && (
+          <Button
+            size="sm"
+            onClick={() => {
+              reset();
+              setOpen(true);
+            }}
+            className="mono h-8 gap-1.5 rounded bg-foreground px-3 text-[11px] font-bold uppercase tracking-tight text-background hover:bg-foreground/90"
+          >
+            <Wallet className="size-3.5" />
+            Connect Wallet
+          </Button>
+        )}
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="max-w-md gap-0 overflow-hidden border-border bg-surface p-0 sm:max-w-lg">
@@ -275,6 +287,7 @@ export function ConnectWalletButton() {
 
   // --- Wrong network ---
   if (unsupported) {
+    if (!showTrigger) return null;
     return (
       <Button
         size="sm"
@@ -290,6 +303,8 @@ export function ConnectWalletButton() {
   }
 
   // --- Connected: account dropdown ---
+  if (!showTrigger) return null;
+
   const explorerUrl = currentChain?.blockExplorers?.default?.url
     ? `${currentChain.blockExplorers.default.url}/address/${address}`
     : null;
