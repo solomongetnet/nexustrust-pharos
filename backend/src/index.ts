@@ -5,8 +5,6 @@ import cors from 'cors';
 import errorHandlerMiddleware from './middleware/error.middleware.js';
 import fileUpload from "express-fileupload";
 import { rateLimit } from 'express-rate-limit';
-import { createServer } from "http";
-import { Server } from "socket.io";
 
 dotenv.config();
 
