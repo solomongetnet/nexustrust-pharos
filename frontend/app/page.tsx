@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { TickerBar } from '@/components/nexus/ticker-bar';
 import { LandingHeader } from '@/components/nexus/landing-header';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Copy } from 'lucide-react';
 import Link from 'next/link';
 
 function Reveal({ children, delay = 0, as: Tag = "div", className = "" }: { children: ReactNode; delay?: number; as?: any; className?: string }) {
@@ -232,6 +232,16 @@ export default function Landing() {
                 <Link href="https://github.com/solomongetnet/nexustrust-pharos/blob/main/mcp/README.md" target="_blank" rel="noopener noreferrer" className="mono rounded bg-foreground px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-background transition-transform hover:-translate-y-0.5">
                   View MCP Docs
                 </Link>
+              </div>
+
+              <div className="mt-6">
+                <div className="mono mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">Debug Inspector</div>
+                <div className="flex items-center justify-between rounded bg-background border border-border px-3 py-2">
+                  <code className="text-xs text-pharos-blue">npx @modelcontextprotocol/inspector node dist/server.js</code>
+                  <button onClick={() => navigator.clipboard.writeText("npx @modelcontextprotocol/inspector node dist/server.js")} className="text-muted-foreground hover:text-foreground">
+                    <Copy className="size-3" />
+                  </button>
+                </div>
               </div>
             </div>
             <div className="lg:pl-8">

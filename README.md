@@ -67,7 +67,6 @@ This exposes the 17 smart contract tools to any connected AI Agent.
 First, create a `.env` file in the `mcp` directory:
 ```env
 PRIVATE_KEY="your_testnet_private_key"
-
 ```
 
 Then install and start the server:
@@ -108,7 +107,7 @@ npm run dev
 You can easily test the MCP tools visually using the official MCP Inspector in your browser. It will automatically read your `.env` file:
 ```bash
 cd mcp
-npx @modelcontextprotocol/inspector tsx src/server.ts
+npx @modelcontextprotocol/inspector node dist/server.js
 ```
 This will start a local server and open an interactive web UI where you can view and execute all 17 available Agent Tools.
 
