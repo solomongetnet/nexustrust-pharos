@@ -23,7 +23,7 @@ PHAROS_RPC_URL="https://atlantic.dplabs-internal.com"  # optional
 npx @modelcontextprotocol/inspector node dist/server.js
 ```
 
-Open the provided URL (usually `http://localhost:5173`) to interactively test all tools.
+Open the provided URL to interactively test all tools.
 
 ## Connect to Claude Desktop
 

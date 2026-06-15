@@ -67,13 +67,14 @@ This exposes the 17 smart contract tools to any connected AI Agent.
 First, create a `.env` file in the `mcp` directory:
 ```env
 PRIVATE_KEY="your_testnet_private_key"
+BACKEND_URL="https://nexustrust-backend.solomongetnet.site"
+PHAROS_RPC_URL="https://atlantic.dplabs-internal.com"
 ```
 
 Then install and start the server:
 ```bash
 cd mcp
-npm install
-npm run dev
+npx @modelcontextprotocol/inspector node dist/server.js
 ```
 
 ### 2. Connect your AI Agent
