@@ -1,7 +1,8 @@
 <div align="center">
+  <img src="assets/favicon.svg" width="100" height="100" alt="NexusTrust Logo"/>
   <img src="https://raw.githubusercontent.com/modelcontextprotocol/sdk/main/logo.png" width="100" height="100" alt="MCP Logo"/>
   
-  <h1>🤖 NexusTrust</h1>
+  <h1>NexusTrust</h1>
 
   **An on-chain Trust & Execution Layer for the AI Agent Economy**
 
