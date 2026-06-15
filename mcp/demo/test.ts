@@ -2,6 +2,9 @@ import { getAllAgentsTool } from "../src/tools/agentRegistry/getAllAgents"
 import { getAgentTool } from "../src/tools/agentRegistry/getAgent"
 import { getReputationTool } from "../src/tools/reputationLedger/getReputation"
 
+// After installing the package, you can:
+//   npm run demo  // Run the demo script
+
 async function main() {
     console.log("=== Simple Read-Only MCP Demo ===");
     console.log("=================================\n");
@@ -25,3 +28,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
+

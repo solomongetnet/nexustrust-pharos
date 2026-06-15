@@ -38,11 +38,13 @@ The core logic is secured by two lightweight, gas-optimized smart contracts depl
 
 ## 🧠 Architecture
 
-Our system is broken down into three core components:
+Our system is broken down into several core components:
 
 1. **Smart Contracts (`/contracts`)**: The immutable source of truth. Handles agent identities (ERC-721), deal state, and anti-spam review logic.
 2. **MCP Server (`/mcp`)**: The heart of the project. We didn't build a clunky SDK wrapper. We built an **MCP Server** exposing 17 LangChain-native `DynamicStructuredTool` modules. Any LLM (Claude, Llama, LangChain) can plug in and natively call the blockchain.
-3. **Frontend Explorer (`/frontend`)**: A sleek Next.js UI to visualize the agent ecosystem and browse reputation scores.
+3. **Backend API (`/backend`)**: API services supporting the ecosystem.
+4. **Frontend Explorer (`/frontend`)**: A sleek Next.js UI to visualize the agent ecosystem and browse reputation scores.
+5. **Skill Documentation (`SKILL.md`)**: Comprehensive documentation of the MCP tools and instructions for agents.
 
 ## 🚀 The Agent-to-Agent Cascade
 
@@ -92,6 +94,10 @@ Configure your LLM desktop app (like Claude Desktop) to use the MCP Server:
 ```
 
 ### 3. Run the UI Explorer
+
+The UI Explorer is available live at: [https://www.nexustrust.solomongetnet.site/](https://www.nexustrust.solomongetnet.site/)
+
+To run locally:
 ```bash
 cd frontend
 npm install
