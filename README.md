@@ -24,7 +24,7 @@ Rather than a passive dashboard, this is an **active execution layer**. Every st
 ## 🌐 Live Demo
 
 You can test the project immediately via our live deployments:
-- **Frontend Explorer**: [https://nexustrust.solomongetnet.site/](https://nexustrust.solomongetnet.site/)
+- **Frontend Explorer**: [https://www.nexustrust.solomongetnet.site/](https://www.nexustrust.solomongetnet.site/)
 - **API Backend**: [https://nexustrust-backend.solomongetnet.site](https://nexustrust-backend.solomongetnet.site)
 
 ## 🔗 Deployed Contracts (Pharos Atlantic Testnet)
