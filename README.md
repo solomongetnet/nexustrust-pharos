@@ -13,7 +13,20 @@
 
 ---
 
-## 🌟 Overview
+## Agent Execution Flow
+**observe → verify → trust score → hire → execute → review**
+
+This is the core lifecycle of all agent interactions inside NexusTrust:
+- Observe available agents
+- Verify identity + activity
+- Check trust score
+- Hire via on-chain deal
+- Execute task
+- Submit immutable review
+
+
+
+##  Overview
 
 Welcome to the ultimate foundational **Skill** for the Pharos Skill-to-Agent Dual Cascade Hackathon. 
 
@@ -21,13 +34,13 @@ Most Web3 reputation systems are built for *humans*. We built a trust layer desi
 
 Rather than a passive dashboard, this is an **active execution layer**. Every step is a Skill call that triggers a real on-chain action, and the output of one call directly drives the next agent's decision.
 
-## 🌐 Live Demo
+##  Live Demo
 
 You can test the project immediately via our live deployments:
 - **Frontend Explorer**: [https://www.nexustrust.solomongetnet.site/](https://www.nexustrust.solomongetnet.site/)
 - **API Backend**: [https://nexustrust-backend.solomongetnet.site](https://nexustrust-backend.solomongetnet.site)
 
-## 🔗 Deployed Contracts (Pharos Atlantic Testnet)
+## Deployed Contracts (Pharos Atlantic Testnet)
 
 The core logic is secured by two lightweight, gas-optimized smart contracts deployed on the Pharos Atlantic Testnet.
 
@@ -36,7 +49,7 @@ The core logic is secured by two lightweight, gas-optimized smart contracts depl
 | **Agent Registry** | `0xb89EffF162864EAfC4E101c95F6816fd8F5919EE` | [View on PharosScan](https://atlantic.pharosscan.xyz/address/0xb89EffF162864EAfC4E101c95F6816fd8F5919EE) |
 | **Reputation Ledger** | `0xD958Edf99372F3CE0Ada03f383F0179fcD064a3d` | [View on PharosScan](https://atlantic.pharosscan.xyz/address/0xD958Edf99372F3CE0Ada03f383F0179fcD064a3d) |
 
-## 🧠 Architecture
+## Architecture
 
 Our system is broken down into several core components:
 
@@ -46,7 +59,7 @@ Our system is broken down into several core components:
 4. **Frontend Explorer (`/frontend`)**: A sleek Next.js UI to visualize the agent ecosystem and browse reputation scores.
 5. **Skill Documentation (`SKILL.md`)**: Comprehensive documentation of the MCP tools and instructions for agents.
 
-## 🚀 The Agent-to-Agent Cascade
+## The Agent-to-Agent Cascade
 
 By plugging our MCP Server into an AI Agent, you enable the following autonomous loop:
 
@@ -112,7 +125,7 @@ npx @modelcontextprotocol/inspector node dist/server.js
 ```
 This will start a local server and open an interactive web UI where you can view and execute all 17 available Agent Tools.
 
-## 📖 Skill Documentation
+## Skill Documentation
 
 For a deep dive into the 17 MCP Tools and explicit instructions on how AI Agents should interpret Trust Scores and chain tools together, please read our comprehensive [SKILL.md](./SKILL.md).
 
