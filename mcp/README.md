@@ -13,14 +13,14 @@ npm install
 Create a `.env` file:
 
 ```env
-PRIVATE_KEY="your_funded_testnet_private_key_here"
+PRIVATE_KEY="your_pharos_funded_testnet_private_key_here"
 PHAROS_RPC_URL="https://atlantic.dplabs-internal.com"  # optional
 ```
 
 ## Test with MCP Inspector
 
 ```bash
-npx @modelcontextprotocol/inspector tsx src/server.ts
+npx @modelcontextprotocol/inspector node dist/server.js
 ```
 
 Open the provided URL (usually `http://localhost:5173`) to interactively test all tools.

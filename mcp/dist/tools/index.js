@@ -3,7 +3,6 @@ import { agentRegistryTools } from "./agentRegistry/index.js";
 import { reputationLedgerTools } from "./reputationLedger/index.js";
 import { accountTools } from "./account/index.js";
 import { DynamicStructuredTool } from "@langchain/core/tools";
-import { z } from "zod";
 export const allAgentTools = [...agentRegistryTools, ...reputationLedgerTools, ...accountTools];
 export function registerAllTools(server) {
     for (const tool of allAgentTools) {

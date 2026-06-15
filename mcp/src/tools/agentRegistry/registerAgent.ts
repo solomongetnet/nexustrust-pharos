@@ -10,7 +10,6 @@ export const registerAgentTool = new DynamicStructuredTool({
   name: "registerAgent",
   description: "Register a new AI agent on the Pharos Agent Registry by providing metadata which will be uploaded to IPFS automatically",
   schema: z.object({
-    agentAddress: z.string().describe("The wallet address of the agent"),
     name: z.string().describe("Name of the agent"),
     description: z.string().describe("Description of the agent"),
     image: z.string().optional().describe("Image URL of the agent"),
@@ -23,8 +22,11 @@ export const registerAgentTool = new DynamicStructuredTool({
       github: z.string().optional(),
     }).optional().describe("Social links of the agent"),
   }),
-  func: async ({ agentAddress, name, description, image, owner, version, skills, tags, socials }) => {
+  func: async ({ name, description, image, owner, version, skills, tags, socials }) => {
     try {
+      const account = getAccount();
+      const agentAddress = account.address;
+
       // 1. Upload metadata to backend
       const metadata = {
         name,
@@ -54,8 +56,6 @@ export const registerAgentTool = new DynamicStructuredTool({
       const uploadData = await response.json();
       const metadataURI = (uploadData as any).ipfsUrl;
 
-      console.log('metadatauri ---------', metadataURI)
-
       if (!metadataURI) {
         throw new Error("Backend did not return a valid ipfsUrl");
       }
@@ -63,7 +63,6 @@ export const registerAgentTool = new DynamicStructuredTool({
       // 2. Register agent on-chain
       const publicClient = getPublicClient();
       const walletClient = getWalletClient();
-      const account = getAccount();
 
       const { request } = await publicClient.simulateContract({
         address: registryAddress,

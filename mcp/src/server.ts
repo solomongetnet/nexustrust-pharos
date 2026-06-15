@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// MUST be first — loads .env before any module-level code (e.g. chain.ts account init)
+import "dotenv/config";
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { registerAllTools } from "./tools/index.js";
@@ -19,6 +22,9 @@ async function main() {
   // Connect the server
   await mcpServer.connect(transport);
   console.error("Pharos Agent MCP Server running on stdio");
+
+  // Prevent the process from exiting immediately; keep the stdio transport alive
+  await new Promise(() => {});
 }
 
 main().catch((error) => {

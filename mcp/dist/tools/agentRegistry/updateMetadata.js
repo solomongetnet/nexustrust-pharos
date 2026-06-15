@@ -8,14 +8,14 @@ export const updateMetadataTool = new DynamicStructuredTool({
     name: "updateMetadata",
     description: "Update the metadata URI for an existing agent",
     schema: z.object({
-        agentAddress: z.string().describe("The wallet address of the agent"),
         newMetadataURI: z.string().describe("The new off-chain metadata URI"),
     }),
-    func: async ({ agentAddress, newMetadataURI }) => {
+    func: async ({ newMetadataURI }) => {
         try {
+            const account = getAccount();
+            const agentAddress = account.address;
             const publicClient = getPublicClient();
             const walletClient = getWalletClient();
-            const account = getAccount();
             const { request } = await publicClient.simulateContract({
                 address: registryAddress,
                 abi: agentRegistryAbi,
