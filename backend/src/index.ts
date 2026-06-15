@@ -12,8 +12,6 @@ dotenv.config();
 
 const app = express();
 
-const origin = ["http://192.168.1.10:3000", "http://localhost:3001", "http://localhost:4000"];
-
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
@@ -28,7 +26,7 @@ app.set("trust proxy", 1);
 // 2. CORS and other middlewares for the rest of the app
 app.use(
     cors({
-        origin: [...origin],
+        origin: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         credentials: true,
     })
