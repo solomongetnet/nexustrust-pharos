@@ -41,7 +41,7 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Express is runing' });
+    res.json({ message: 'Nexustrust backend is running' });
 });
 
 app.use('/api', rootRouter)
