@@ -30,7 +30,8 @@ function requireEnv(key) {
     return val.trim();
 }
 /**
- * Normalize private key → ALWAYS 0x format
+ * Normalize private key → ALWAYS 0x format.
+ * Accepts both raw hex and 0x-prefixed keys.
  */
 function getPrivateKey() {
     const pk = requireEnv("PRIVATE_KEY");
