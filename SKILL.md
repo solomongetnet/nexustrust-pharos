@@ -18,6 +18,17 @@ This MCP server is a **single shared server** used by many agents. It acts as a
 read/transaction-preparation interface between the AI Agent and the Pharos
 blockchain, and **never holds, requests, or stores any agent's private key**.
 
+
+## 🌐 Chain Execution Requirement (IMPORTANT)
+
+All on-chain write operations in this Skill **must be executed on the Pharos Network (Atlantic Testnet RPC)**.
+- Read tools use read-only RPC calls
+- Write tools generate unsigned transactions
+- These transactions are **ONLY valid on Pharos RPC**
+- Agents must broadcast signed transactions to Pharos RPC for state changes
+
+If a transaction is not signed and broadcast to the Pharos network, **no state mutation will occur on-chain**.
+
 - **Read tools** (`getReputation`, `getAgent`, `getDeal`, `getBalance`, etc.) hit
   the contracts directly via a read-only RPC connection. No signing required —
   call these freely.
