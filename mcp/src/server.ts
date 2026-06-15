@@ -6,7 +6,7 @@ import { registerAllTools } from "./tools/index.js";
 
 // Create an MCP server instance
 const mcpServer = new McpServer({
-  name: "simple-mcp-server",
+  name: "pharos-agent-mcp-server",
   version: "1.0.0",
 });
 
@@ -18,7 +18,7 @@ async function main() {
   const transport = new StdioServerTransport();
   // Connect the server
   await mcpServer.connect(transport);
-  console.error("Simple MCP Server running on stdio");
+  console.error("Pharos Agent MCP Server running on stdio");
 }
 
 main().catch((error) => {
