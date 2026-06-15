@@ -123,9 +123,9 @@ export function AppHeader({ sections }: { sections?: SectionLink[] } = {}) {
       {/* Top bar — brand + search + utilities */}
       <div className="flex h-14 items-center gap-3 border-b border-border/60 px-4 sm:gap-4 sm:px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2" onClick={() => setOpen(false)}>
-          <div className="size-3 rounded-sm bg-pharos-green pulse-node" />
+          <img src="/favicon.svg" alt="NexusTrust Logo" className="size-6" />
           <span className="mono text-sm font-semibold tracking-tighter">
-            NEXUSTRUST<span className="hidden text-muted-foreground sm:inline">::v0.1.4</span>
+            NEXUSTRUST<span className="hidden text-muted-foreground sm:inline">::v1.0.0</span>
           </span>
         </Link>
 

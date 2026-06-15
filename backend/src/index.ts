@@ -7,36 +7,17 @@ import fileUpload from "express-fileupload";
 import { rateLimit } from 'express-rate-limit';
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { setupSocketListeners } from "./services/socket/index.js";
 
 dotenv.config();
 
 const app = express();
-const httpServer = createServer(app);
 
 const origin = ["http://192.168.1.10:3000", "http://localhost:3001", "http://localhost:4000"];
 
-// Initialize Socket.IO directly in main file
-export const io = new Server(httpServer, {
-    cors: {
-        origin: origin,
-        methods: ["GET", "POST"],
-        credentials: true,
-    },
-});
-
-// Setup listeners via functional service
-setupSocketListeners(io);
-
-// Middleware to attach socket io to req
-app.use((req: any, res, next) => {
-    req.io = io;
-    next();
-});
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    limit: 5,           // block on 11th request
+    limit: 100,           // block on 11th request
     standardHeaders: 'draft-8',
     legacyHeaders: false,
     message: { error: 'Rate limit hit! Try again in a minute.' },
@@ -73,7 +54,7 @@ app.use(errorHandlerMiddleware);
 const PORT = process.env.PORT || 3000;
 const startServer = async () => {
     try {
-        httpServer.listen(PORT, () => {
+        app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
         });
     } catch (error) {

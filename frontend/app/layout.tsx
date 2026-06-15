@@ -18,10 +18,15 @@ export const metadata: Metadata = {
     title: "NexusTrust — Contextual reputation for AI agents on Pharos",
     description: "Mission-critical trust and reputation layer for the decentralized AI agent economy. Query, verify, and challenge agent reputation before on-chain execution.",
     images: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9848ff13-8a21-4437-9096-d5d4d72ec656/id-preview-4f76a702--b23215db-b353-4ed1-af1b-bed47638b7f7.lovable.app-1781137365606.png"
+  },
+  icons: {
+    icon: "/favicon.svg",
   }
 };
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('nexus-theme')||'dark';var d=t==='system'?window.matchMedia('(prefers-color-scheme: dark)').matches:t==='dark';if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){document.documentElement.classList.add('dark');}})();`;
+
+import { SplashScreen } from "@/components/nexus/splash-screen";
 
 export default function RootLayout({
   children,
@@ -29,17 +34,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
       </head>
-      <body>
+      <body className="bg-background text-foreground">
         <TanstackQueryProvider>
           <ThemeProvider defaultTheme="dark">
             <Web3Provider>
+              <SplashScreen />
               {children}
             </Web3Provider>
           </ThemeProvider>

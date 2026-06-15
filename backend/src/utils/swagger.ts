@@ -3,14 +3,14 @@ const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
   info: {
-    title: "Express Starter",
-    description: "API documentation for Express starter Backend",
+    title: "Pharos Hackathon",
+    description: "API documentation for Pharos Hackathon Backend",
   },
   host: "localhost:3000",
   schemes: ["http"],
 };
 
 const outputFile = "../swagger-output.json";
-const endpointsFiles = ["./src/index.ts"]; // 👈 your main route file
+const endpointsFiles = ["./src/index.ts"];
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc);  

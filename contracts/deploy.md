@@ -1,1 +1,0 @@
-npx.cmd hardhat ignition deploy ignition/modules/PharosContracts.ts --network pharos

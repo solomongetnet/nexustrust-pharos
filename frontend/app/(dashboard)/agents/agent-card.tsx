@@ -35,7 +35,7 @@ export function AgentCard({ agent }: AgentCardProps) {
   };
 
   return (
-    <Card className="group overflow-hidden transition-all hover:border-emerald-500/30">
+    <Card className="group overflow-hidden transition-all hover:border-emerald-500/30 h-full flex flex-col">
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
@@ -81,7 +81,7 @@ export function AgentCard({ agent }: AgentCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-4 pt-0 flex-1">
         {agent.metadata?.description && (
           <p className="text-sm text-muted-foreground line-clamp-2">
             {agent.metadata.description}
@@ -108,55 +108,58 @@ export function AgentCard({ agent }: AgentCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="flex flex-wrap items-center justify-between gap-2 border-t border-border/40 bg-card/30 p-4">
-        <div className="flex items-center gap-1.5">
-          {agent.metadata?.socials?.github && (
-            <Link href={agent.metadata.socials.github} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <ExternalLink className="h-4 w-4" />
+      <CardFooter className="flex flex-col gap-3 border-t border-border/40 bg-card/30 p-4 mt-auto">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            {agent.metadata?.socials?.github && (
+              <Link href={agent.metadata.socials.github} target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            {agent.metadata?.socials?.website && (
+              <Link href={agent.metadata.socials.website} target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Globe className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? 'Show Less' : 'Show More'}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs flex items-center gap-1.5"
+              onClick={handleCopyAddress}
+            >
+              {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? 'Copied' : 'Copy Address'}
+            </Button>
+            <Link href={explorerUrl} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="text-xs flex items-center gap-1.5">
+                <ExternalLink className="h-3.5 w-3.5" />
+                Explorer
               </Button>
             </Link>
-          )}
-          {agent.metadata?.socials?.website && (
-            <Link href={agent.metadata.socials.website} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Globe className="h-4 w-4" />
-              </Button>
-            </Link>
-          )}
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-xs"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {isExpanded ? 'Show Less' : 'Show More'}
+        <Link href={`/agents/${agent.agentAddress}`} className="w-full">
+          <Button variant="default" className="w-full text-sm flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+            <Eye className="h-4 w-4" />
+            View Profile
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-xs flex items-center gap-1.5"
-            onClick={handleCopyAddress}
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
-            {copied ? 'Copied' : 'Copy Address'}
-          </Button>
-          <Link href={explorerUrl} target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" size="sm" className="text-xs flex items-center gap-1.5">
-              <ExternalLink className="h-3.5 w-3.5" />
-              Explorer
-            </Button>
-          </Link>
-          <Link href={`/agents/${agent.agentAddress}`}>
-            <Button variant="secondary" size="sm" className="text-xs flex items-center gap-1.5">
-              <Eye className="h-3.5 w-3.5" />
-              View Profile
-            </Button>
-          </Link>
-        </div>
+        </Link>
       </CardFooter>
 
       {isExpanded && (

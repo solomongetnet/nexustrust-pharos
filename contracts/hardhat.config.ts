@@ -1,3 +1,4 @@
+// @ts-ignore
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
 import { defineConfig } from "hardhat/config";
 import "dotenv/config";
@@ -39,11 +40,7 @@ export default defineConfig({
     },
   },
 
-  verify: {
-    etherscan: {
-      apiKey: "Put a random string", // Note we don't need a apiKey here, just leave a random string
-    },
-  },
+
   chainDescriptors: {
     688689: {
       name: "Pharos Atlantic",

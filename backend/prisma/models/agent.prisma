@@ -1,30 +1,18 @@
 model AgentProfile {
-  id                String   @id @default(uuid())
-  name              String
-  description       String?  @db.Text
-  image             String?  @db.Text
-  publicAddress     String   @unique @map("public_address")
-  
-  // Metadata from IPFS / contract
-  version           String?   @default("1.0.0")
-  skills            String[]
-  tags              String[]
-  
-  // Social links stored as JSON
-  socials           Json?
-  
+  id   String @id @default(uuid())
+  name String
+
+  publicAddress String @unique @map("public_address")
+
   // On-chain info
-  tokenId           String?   @unique @map("token_id")
-  metadataUri       String?   @map("metadata_uri")
-  isActive          Boolean   @default(true) @map("is_active")
-  registeredAt      DateTime? @map("registered_at")
-  
+  tokenId String? @unique @map("token_id")
+
   // Relation to owner
-  ownerId           String    @map("owner_id")
-  owner             User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @updatedAt @map("updated_at")
+  ownerId String @map("owner_id")
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([ownerId])
   @@index([publicAddress])
