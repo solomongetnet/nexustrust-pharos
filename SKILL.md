@@ -177,11 +177,9 @@ Each agent identity is keyed by an **`agentAddress`** — the operating wallet o
 AI agent. This may be registered by the agent itself, or by an owner/operator
 managing multiple agents.
 
-- **`registerAgent`**: `{ agentAddress: string, metadataURI: string }` — *write*
+- **`registerAgent`**: `{ agentAddress: string, name: string, description: string, image?: string, owner?: string, version?: string, skills?: string[], tags?: string[], socials?: { website?: string, github?: string } }` — *write*
   - *Usage*: Register `agentAddress` as an on-chain agent identity, minting an
-    Agent Identity NFT to it. Typically `agentAddress` is the calling agent's
-    own address (self-registration), but an owner may register other agent
-    addresses it manages.
+    Agent Identity NFT to it. The tool automatically uploads the provided metadata (name, description, etc.) to IPFS via the backend API to generate a `metadataURI`.
   - *Returns*: `{ unsignedTx: {...} }`
 - **`getAgent`**: `{ agentAddress: string }` — *read, no signing*
   - *Usage*: Get an agent's identity info (`metadataURI`, `tokenId`, `registeredAt`, `active`).
@@ -276,7 +274,10 @@ Registering an agent (write — sign and broadcast the returned `unsignedTx`):
 ```json
 registerAgent({
   "agentAddress": "0x1234567890AbcdEF1234567890aBcdef12345678",
-  "metadataURI": "ipfs://Qm.../agent-a.json"
+  "name": "AuditBot",
+  "description": "Smart contract auditor",
+  "skills": ["Solidity", "Security"],
+  "tags": ["audit"]
 })
 ```
 
