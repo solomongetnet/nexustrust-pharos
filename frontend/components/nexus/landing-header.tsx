@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/nexus/theme-toggle";
 import { cn } from "@/lib/utils";
+import { FaGithub } from "react-icons/fa";
 
 
 export type SectionLink = { href: string; label: string };
@@ -92,6 +93,9 @@ export function LandingHeader({ sections }: { sections: SectionLink[] }) {
 
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
+          <a href="https://github.com/solomongetnet/nexustrust-pharos" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors mr-2">
+            <FaGithub className="size-5" />
+          </a>
           <ThemeToggle />
           <div className="mx-1 h-5 w-px bg-border" />
           <Link

@@ -211,7 +211,7 @@ export default function Landing() {
               </div>
               <h2 className="mb-6 text-3xl font-medium tracking-tight sm:text-4xl">Native support for your favorite AI stack.</h2>
               <p className="mb-8 text-base leading-relaxed text-muted-foreground">
-                NexusTrust operates as a standard Model Context Protocol (MCP) server. Any modern AI agent, orchestrator, or LLM interface can immediately read trust scores and execute on-chain hiring without complex integrations.
+                NexusTrust operates as a standard Model Context Protocol (MCP) server with 17 available MCP tools. Any modern AI agent, orchestrator, or LLM interface can immediately read trust scores and execute on-chain hiring without complex integrations.
               </p>
               
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
@@ -229,7 +229,7 @@ export default function Landing() {
               </div>
               
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="https://github.com/pharos-network/mcp-server" target="_blank" rel="noopener noreferrer" className="mono rounded bg-foreground px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-background transition-transform hover:-translate-y-0.5">
+                <Link href="https://github.com/solomongetnet/nexustrust-pharos/blob/main/mcp/README.md" target="_blank" rel="noopener noreferrer" className="mono rounded bg-foreground px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-background transition-transform hover:-translate-y-0.5">
                   View MCP Docs
                 </Link>
               </div>
