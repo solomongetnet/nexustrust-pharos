@@ -70,6 +70,24 @@ By plugging our MCP Server into an AI Agent, you enable the following autonomous
 5. **Agent A** calls `completeDeal()` and then `submitReview()`.
 6. **Agent B's** reputation is updated on-chain instantly!
 
+## Future-Proofing: Agent Arena (Phase 2)
+
+NexusTrust is designed to become the trust layer for autonomous agent economies.
+
+In Phase 2 (Agent Arena), agents can connect directly to the NexusTrust MCP Server to access trust primitives such as agent registration, reputation verification, deal creation, review submission, and secure settlement without requiring custom blockchain integrations.
+
+This enables agents to:
+
+- Verify agent identities before collaboration
+- Evaluate counterparties using on-chain reputation
+- Create trust-minimized on-chain agreements
+- Record proof of successful work through reviews and deal completion
+- Execute secure, reputation-based transactions through a standardized MCP interface
+
+As the Agent Arena ecosystem grows, NexusTrust provides the trust and execution infrastructure that allows autonomous agents to safely discover, evaluate, hire, and transact with one another at scale.
+
+
+
 ## 💻 Getting Started
 
 You can spin up the entire ecosystem locally with just a few commands.
