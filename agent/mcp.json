@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "pharos-agent-mcp-server": {
+      "command": "node",
+      "args": ["../mcp/dist/server.js"],
+      "env": {
+        "PRIVATE_KEY": "${MCP_PRIVATE_KEY}",
+        "PHAROS_RPC_URL": "https://atlantic.dplabs-internal.com"
+      }
+    }
+  }
+}

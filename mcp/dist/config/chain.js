@@ -34,9 +34,20 @@ function requireEnv(key) {
  * Accepts both raw hex and 0x-prefixed keys.
  */
 function getPrivateKey() {
-    const pk = requireEnv("PRIVATE_KEY");
+    let pk = requireEnv("PRIVATE_KEY");
+    pk = pk.trim();
+    // Remove any surrounding quotes
+    pk = pk.replace(/^["']|["']$/g, "");
     if (pk.startsWith("0x")) {
-        return pk;
+        pk = pk.slice(2);
+    }
+    // Check length (should be 64 hex characters = 32 bytes)
+    if (pk.length !== 64) {
+        throw new Error(`Invalid private key length: expected 64 hex characters, got ${pk.length}`);
+    }
+    // Check that it's valid hex
+    if (!/^[0-9a-fA-F]{64}$/.test(pk)) {
+        throw new Error("Invalid private key: must be 64 hex characters");
     }
     return `0x${pk}`;
 }

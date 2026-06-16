@@ -14,7 +14,49 @@ Create a `.env` file:
 
 ```env
 PRIVATE_KEY="your_pharos_funded_testnet_private_key_here"
-PHAROS_RPC_URL="https://atlantic.dplabs-internal.com"  # optional
+BACKEND_URL="https://nexustrust-backend.solomongetnet.site"
+PHAROS_RPC_URL="https://atlantic.dplabs-internal.com"
+HTTP_PORT=3000  # optional, defaults to 3000
+```
+
+## Run the Server
+
+### As MCP Stdio Server (for Claude Desktop, etc.)
+```bash
+npm run build
+npm start
+```
+
+### With HTTP API Server (for direct access)
+```bash
+npm run build
+npm start
+# HTTP API will be available at http://localhost:3000
+```
+
+## HTTP API Endpoints
+
+### List All Tools
+```bash
+GET http://localhost:3000/tools
+```
+
+### Execute a Tool
+```bash
+POST http://localhost:3000/tools/:toolName
+Content-Type: application/json
+
+{
+  "arg1": "value1",
+  "arg2": "value2"
+}
+```
+
+**Example: Get an agent's reputation**
+```bash
+curl -X POST http://localhost:3000/tools/getReputation \
+  -H "Content-Type: application/json" \
+  -d '{"agentAddress": "0x1234567890AbcdEF1234567890aBcdef12345678"}'
 ```
 
 ## Test with MCP Inspector

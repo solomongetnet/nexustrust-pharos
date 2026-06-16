@@ -5,7 +5,9 @@ import "dotenv/config";
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerAllTools } from "./tools/index.js";
+import { registerAllTools, allAgentTools } from "./tools/index.js";
+import express from "express";
+import { DynamicStructuredTool } from "@langchain/core/tools";
 
 // Create an MCP server instance
 const mcpServer = new McpServer({
@@ -16,14 +18,55 @@ const mcpServer = new McpServer({
 // Register all tools
 registerAllTools(mcpServer);
 
+// Create Express HTTP server
+const app = express();
+const PORT = process.env.HTTP_PORT || 3000;
+
+app.use(express.json());
+
+// List all available tools
+app.get("/tools", (req, res) => {
+  const tools = allAgentTools.map((tool) => {
+    const t = tool as DynamicStructuredTool<any>;
+    return {
+      name: t.name,
+      description: t.description,
+      schema: t.schema
+    };
+  });
+  res.json({ tools });
+});
+
+// Execute a tool
+app.post("/tools/:toolName", async (req, res) => {
+  const { toolName } = req.params;
+  const args = req.body;
+
+  const tool = allAgentTools.find((t) => (t as DynamicStructuredTool<any>).name === toolName);
+  if (!tool) {
+    return res.status(404).json({ error: `Tool '${toolName}' not found` });
+  }
+
+  try {
+    const result = await (tool as DynamicStructuredTool<any>).invoke(args);
+    res.json({ result });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 async function main() {
-  // Create a stdio transport
+  // Start HTTP server
+  app.listen(PORT, () => {
+    console.error(`HTTP API server running on http://localhost:${PORT}`);
+  });
+
+  // Start stdio MCP server
   const transport = new StdioServerTransport();
-  // Connect the server
   await mcpServer.connect(transport);
   console.error("Pharos Agent MCP Server running on stdio");
 
-  // Prevent the process from exiting immediately; keep the stdio transport alive
+  // Prevent the process from exiting immediately
   await new Promise(() => {});
 }
 

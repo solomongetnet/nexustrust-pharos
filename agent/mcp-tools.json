@@ -1,0 +1,553 @@
+{
+    "tools": [
+        {
+            "name": "registerAgent",
+            "description": "Register a new AI agent on the Pharos Agent Registry by providing metadata which will be uploaded to IPFS automatically",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "name": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        },
+                        "description": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        },
+                        "image": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "string"
+                                    },
+                                    "type": "string",
+                                    "format": null,
+                                    "minLength": null,
+                                    "maxLength": null
+                                }
+                            },
+                            "type": "optional"
+                        },
+                        "owner": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "string"
+                                    },
+                                    "type": "string",
+                                    "format": null,
+                                    "minLength": null,
+                                    "maxLength": null
+                                }
+                            },
+                            "type": "optional"
+                        },
+                        "version": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "string"
+                                    },
+                                    "type": "string",
+                                    "format": null,
+                                    "minLength": null,
+                                    "maxLength": null
+                                }
+                            },
+                            "type": "optional"
+                        },
+                        "skills": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "array",
+                                        "element": {
+                                            "def": {
+                                                "type": "string"
+                                            },
+                                            "type": "string",
+                                            "format": null,
+                                            "minLength": null,
+                                            "maxLength": null
+                                        }
+                                    },
+                                    "type": "array",
+                                    "element": {
+                                        "def": {
+                                            "type": "string"
+                                        },
+                                        "type": "string",
+                                        "format": null,
+                                        "minLength": null,
+                                        "maxLength": null
+                                    }
+                                }
+                            },
+                            "type": "optional"
+                        },
+                        "tags": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "array",
+                                        "element": {
+                                            "def": {
+                                                "type": "string"
+                                            },
+                                            "type": "string",
+                                            "format": null,
+                                            "minLength": null,
+                                            "maxLength": null
+                                        }
+                                    },
+                                    "type": "array",
+                                    "element": {
+                                        "def": {
+                                            "type": "string"
+                                        },
+                                        "type": "string",
+                                        "format": null,
+                                        "minLength": null,
+                                        "maxLength": null
+                                    }
+                                }
+                            },
+                            "type": "optional"
+                        },
+                        "socials": {
+                            "def": {
+                                "type": "optional",
+                                "innerType": {
+                                    "def": {
+                                        "type": "object",
+                                        "shape": {
+                                            "website": {
+                                                "def": {
+                                                    "type": "optional",
+                                                    "innerType": {
+                                                        "def": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "string",
+                                                        "format": null,
+                                                        "minLength": null,
+                                                        "maxLength": null
+                                                    }
+                                                },
+                                                "type": "optional"
+                                            },
+                                            "github": {
+                                                "def": {
+                                                    "type": "optional",
+                                                    "innerType": {
+                                                        "def": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "string",
+                                                        "format": null,
+                                                        "minLength": null,
+                                                        "maxLength": null
+                                                    }
+                                                },
+                                                "type": "optional"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "optional"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "updateMetadata",
+            "description": "Update the metadata URI for an existing agent",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "newMetadataURI": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "deactivateAgent",
+            "description": "Deactivate an agent (mark as inactive/retired)",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "agentAddress": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "reactivateAgent",
+            "description": "Reactivate a previously deactivated agent",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "agentAddress": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getAgent",
+            "description": "Get full agent info by address",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "agentAddress": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getAllAgents",
+            "description": "Get a paginated list of all registered agents",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "offset": {
+                            "def": {
+                                "type": "number",
+                                "checks": []
+                            },
+                            "type": "number",
+                            "minValue": null,
+                            "maxValue": null,
+                            "isInt": false,
+                            "isFinite": true,
+                            "format": null
+                        },
+                        "limit": {
+                            "def": {
+                                "type": "number",
+                                "checks": []
+                            },
+                            "type": "number",
+                            "minValue": null,
+                            "maxValue": null,
+                            "isInt": false,
+                            "isFinite": true,
+                            "format": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "isActive",
+            "description": "Check whether an address is a registered and active agent",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "agentAddress": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "createDeal",
+            "description": "Propose a deal from a client agent to a worker agent",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "worker": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        },
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        },
+                        "taskMetadataURI": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "acceptDeal",
+            "description": "Accept a proposed deal. Only callable by the deal's worker.",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "rejectDeal",
+            "description": "Reject a proposed deal. Only callable by the deal's worker.",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "completeDeal",
+            "description": "Mark an accepted deal as completed. Only callable by the deal's client.",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "submitReview",
+            "description": "Submit a review for a completed deal. Only callable by the client.",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        },
+                        "score": {
+                            "def": {
+                                "type": "number",
+                                "checks": []
+                            },
+                            "type": "number",
+                            "minValue": null,
+                            "maxValue": null,
+                            "isInt": false,
+                            "isFinite": true,
+                            "format": null
+                        },
+                        "tag": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getReputation",
+            "description": "Get aggregate reputation data for an agent",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "agentAddress": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getDeal",
+            "description": "Get the full deal record for a given dealId",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "dealId": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getBalance",
+            "description": "Get the PHRS balance of an account on the Pharos network",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {
+                        "address": {
+                            "def": {
+                                "type": "string"
+                            },
+                            "type": "string",
+                            "format": null,
+                            "minLength": null,
+                            "maxLength": null
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getLatestBlock",
+            "description": "Get the latest block number on the Pharos network",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {}
+                },
+                "type": "object"
+            }
+        },
+        {
+            "name": "getGasPrice",
+            "description": "Get the current gas price on the Pharos network",
+            "schema": {
+                "def": {
+                    "type": "object",
+                    "shape": {}
+                },
+                "type": "object"
+            }
+        }
+    ]
+}

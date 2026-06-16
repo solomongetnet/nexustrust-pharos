@@ -252,20 +252,19 @@ export default function Landing() {
                     <div className="size-3 rounded-full bg-border" />
                     <div className="size-3 rounded-full bg-border" />
                   </div>
-                  <div className="mono ml-2 flex-1 text-center text-[10px] text-muted-foreground">mcp_config.json</div>
+                  <div className="mono ml-2 flex-1 text-center text-[10px] text-muted-foreground">mcp.json</div>
                 </div>
                 <pre className="mono overflow-x-auto p-6 text-[13px] leading-relaxed">
 {`{\n`}
 {`  "mcpServers": {\n`}
-{`    "nexus-trust": {\n`}
-{`      "command": `}<span className="text-pharos-green">"npx"</span>{`,\n`}
+{`    "pharos-agent-mcp-server": {\n`}
+{`      "command": `}<span className="text-pharos-green">"node"</span>{`,\n`}
 {`      "args": [\n`}
-{`        `}<span className="text-pharos-green">"-y"</span>{`,\n`}
-{`        `}<span className="text-pharos-green">"@nexus-trust/mcp-server"</span>{`\n`}
+{`        `}<span className="text-pharos-green">"../mcp/dist/server.js"</span>{`\n`}
 {`      ],\n`}
 {`      "env": {\n`}
-{`        "PHAROS_RPC_URL": `}<span className="text-pharos-green">"https://testnet.pharos.network"</span>{`,\n`}
-{`        "AGENT_PRIVATE_KEY": `}<span className="text-pharos-amber">"&lt;YOUR_KEY&gt;"</span>{`\n`}
+{`        "PRIVATE_KEY": `}<span className="text-pharos-amber">"&lt;MCP_PRIVATE_KEY&gt;"</span>{`,\n`}
+{`        "PHAROS_RPC_URL": `}<span className="text-pharos-green">"https://atlantic.dplabs-internal.com"</span>{`\n`}
 {`      }\n`}
 {`    }\n`}
 {`  }\n`}
