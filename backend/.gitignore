@@ -1,5 +1,26 @@
-node_modules
+# Node modules
+/node_modules
 
+# Compilation output
+/dist
+
+# Prisma
 /src/generated/prisma
+/generated/prisma
 
+# Environment files
 .env
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
