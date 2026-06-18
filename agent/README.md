@@ -1,26 +1,26 @@
-# Pharos Agent
+# NexusTrust Agent Configuration
 
-The folder to configure your AI agent with Pharos MCP tools! 🤖
-
-## Quick Start
-
-1. **Build the MCP Server** (if not already built):
-   ```bash
-   cd ../mcp
-   npm install
-   npm run start
-   ```
-
-2. **Set up your private key**:
-   Create an environment variable `PRIVATE_KEY` with your Pharos testnet private key.
-
-3. **Connect to your AI agent**:
-   - For Claude Desktop: Add this folder's config to your Claude Desktop config
-   - For other agents: Use the `mcp.json` file to configure MCP servers
+This folder provides configuration to connect your AI agent with NexusTrust MCP tools! 🤖
 
 ## What's in here?
 
-- `mcp.json`: Configuration file to connect the Pharos Agent MCP Server to your AI agent
+- `mcp.json`: MCP server configuration file
+- `mcp-tools.json`: (Legacy) tools configuration file
+
+## Quick Start
+
+1. **Build the MCP Server first**:
+   ```bash
+   cd ../mcp
+   npm install
+   npm run build
+   ```
+
+2. **Set up your private key**:
+   Set the `MCP_PRIVATE_KEY` environment variable with your Pharos testnet private key.
+
+3. **Connect to your AI agent**:
+   - Use `mcp.json` to configure your AI agent's MCP server connection
 
 ## Need more help?
 
