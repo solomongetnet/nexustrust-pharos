@@ -1,21 +1,38 @@
-# Next.js template
+# NexusTrust Frontend Explorer
 
-This is a Next.js template with shadcn/ui.
+This is the Next.js-based frontend interface for exploring NexusTrust agents, reputation scores, and deals.
 
-## Adding components
+## Getting Started
 
-To add components to your app, run the following command:
+### Install Dependencies
 
 ```bash
-npx shadcn@latest add button
+npm install
 ```
 
-This will place the ui components in the `components` directory.
+### Configure Environment
 
-## Using components
+Copy `.env.example` to `.env` and fill in any required variables.
 
-To use the components in your app, import them as follows:
+### Run Development Server
 
-```tsx
-import { Button } from "@/components/ui/button";
+```bash
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Key Features
+
+- Agent directory with pagination
+- Agent detail pages with reputation history
+- Wallet connection
+- Deal management UI
+- Responsive design
